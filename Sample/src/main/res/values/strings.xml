@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Imagecutview</string>
+    <string name="Up">Up</string>
+    <string name="Down">Down</string>
+    <string name="Left">Left</string>
+    <string name="Right">Right</string>
+    <string name="Test1Image">Test1</string>
+    <string name="animation">animation</string>
+</resources>
