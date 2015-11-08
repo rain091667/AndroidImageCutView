@@ -153,26 +153,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    /*public static Bitmap getBitmap(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Bitmap d = BitmapFactory.decodeStream(is);
-            is.close();
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private Runnable LoadImageURL = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                Test1Bitmap = BitmapFactory.decodeStream((InputStream)new URL("http://192.168.1.236/web/CurrentImage.jpg").getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };*/
 }
