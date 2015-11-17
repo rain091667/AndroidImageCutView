@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     Button buttonImage3;
     Thread AnimationThread;
     boolean Animation_Flag;
-    //int Animation_Type;
     int Location_x;
     int Location_y;
 
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         MyImageCutView = (BaseImageCutView) findViewById(R.id.MyImageCutView);
         Animation_Flag = false;
-        //Animation_Type = 0;
         Location_x=0;
         Location_y=0;
 
