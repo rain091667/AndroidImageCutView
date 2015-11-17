@@ -51,8 +51,36 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Image1"
+            android:id="@+id/buttonImage1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Image2"
+            android:id="@+id/buttonImage2" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Image3"
+            android:id="@+id/buttonImage3" />
+    </LinearLayout>
+
     <imageview.viewlib.rainhong.imagecutviewlib.BaseImageCutView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/MyImageCutView" />
+
 </LinearLayout>

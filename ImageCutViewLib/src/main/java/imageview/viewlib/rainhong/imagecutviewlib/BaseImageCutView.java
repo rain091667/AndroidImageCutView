@@ -3,6 +3,7 @@ package imageview.viewlib.rainhong.imagecutviewlib;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -39,6 +40,16 @@ public class BaseImageCutView extends ImageView {
      * init value and setBaseImage.
      * RectMaxWidth and RectMaxHeight will be set to Bitmap half width and half height.
      * init location will be X = 0, Y = 0.
+     * @param ResourceId   drawable Source Image
+     */
+    public void setBaseImage(int ResourceId) {
+        setBaseImage(BitmapFactory.decodeResource(getResources(), ResourceId));
+    }
+
+    /**
+     * init value and setBaseImage.
+     * RectMaxWidth and RectMaxHeight will be set to Bitmap half width and half height.
+     * init location will be X = 0, Y = 0.
      * @param bmp   Source Bitmap
      */
     public void setBaseImage(Bitmap bmp) {
@@ -55,7 +66,7 @@ public class BaseImageCutView extends ImageView {
         this.FlushCanvas = new Canvas(FlushLocationBitmap);
         this.Bmp_DestinationRect = new Rect(0, 0, RectMaxWidth, RectMaxHeight);
         this.Bmp_SourceRect = new Rect();
-        this.FlushLocationBitmap(CurrentLocX, CurrentLocY);
+        this.MoveLocationBitmap(CurrentLocX, CurrentLocY);
         super.setImageBitmap(FlushLocationBitmap);
     }
 
@@ -87,39 +98,105 @@ public class BaseImageCutView extends ImageView {
         this.FlushCanvas = new Canvas(FlushLocationBitmap);
         this.Bmp_DestinationRect = new Rect(0, 0, RectMaxWidth, RectMaxHeight);
         this.Bmp_SourceRect = new Rect();
-        this.FlushLocationBitmap(CurrentLocX, CurrentLocY);
+        this.MoveLocationBitmap(CurrentLocX, CurrentLocY);
         super.setImageBitmap(FlushLocationBitmap);
     }
 
     /**
-     * Reflush image by index.
+     * Move image by index.
      * @param x   new index of x.
      * @param y   new index of y.
      */
-    public void FlushLocation(int x, int y) {
+    public void moveImageLocation(int x, int y) {
         this.CurrentLocX = x;
         this.CurrentLocY = y;
-        FlushLocationBitmap(CurrentLocX, CurrentLocY);
+        MoveLocationBitmap(CurrentLocX, CurrentLocY);
         super.setImageBitmap(FlushLocationBitmap);
     }
 
-    public int getFlushLocationX() {
+    /**
+     * Get current move index.
+     * @return Current Move Index X.
+     */
+    public int getCurrentLocationX() {
         return this.CurrentLocX;
     }
 
-    public int getFlushLocationY() {
+    /**
+     * Get current move index.
+     * @return Current Move Index Y.
+     */
+    public int getCurrentLocationY() {
         return this.CurrentLocY;
     }
 
+    /**
+     * Get Rect Length.
+     * @return Rect Width.
+     */
     public int getRectMaxWidth() {
         return this.RectMaxWidth;
     }
 
+    /**
+     * Set Rect Length.
+     * @param Width Set Max Rect Width.
+     */
+    public void setRectMaxWidth(int Width) {
+        if(Width > BaseImage.getWidth())
+            throw new RuntimeException(
+                    "\nBitmap Max Width: " + BaseImage.getWidth() + " MaxRectWidth: " + Width +
+                            "\nMaxRectSize must be small than bitmap size."
+            );
+        this.RectMaxWidth = Width;
+    }
+
+    /**
+     * Set Rect Length.
+     * @param Height Set Max Rect Height.
+     */
+    public void setRectMaxHeight(int Height) {
+        if(Height > BaseImage.getHeight())
+            throw new RuntimeException(
+                    "\nBitmap Max Height: " + BaseImage.getHeight() + " MaxRectWidth: " + Height +
+                            "\nMaxRectSize must be small than bitmap size."
+            );
+        this.RectMaxHeight = Height;
+    }
+
+    /**
+     * Get Rect Length.
+     * @return Rect Height.
+     */
     public int getRectMaxHeight() {
         return this.RectMaxHeight;
     }
 
-    private void FlushLocationBitmap(int LocationX, int LocationY) {
+    /**
+     * Get View BaseImage.
+     * @return View BaseImage.
+     */
+    public Bitmap getBaseImage() {
+        return this.BaseImage;
+    }
+
+    /**
+     * Get BaseImage Length.
+     * @return BaseImage Width.
+     */
+    public int getBaseImageWidth() {
+        return this.BaseImage.getWidth();
+    }
+
+    /**
+     * Get BaseImage Length.
+     * @return BaseImage Height.
+     */
+    public int getBaseImageHeight() {
+        return this.BaseImage.getHeight();
+    }
+
+    private void MoveLocationBitmap(int LocationX, int LocationY) {
         this.Bmp_SourceRect.set(
                 LocationX,
                 LocationY,

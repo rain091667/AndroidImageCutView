@@ -6,4 +6,7 @@
     <string name="Right">Right</string>
     <string name="Test1Image">Test1</string>
     <string name="animation">animation</string>
+    <string name="Image1">Image1</string>
+    <string name="Image2">Image2</string>
+    <string name="Image3">Image3</string>
 </resources>

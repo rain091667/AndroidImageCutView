@@ -1,7 +1,5 @@
 package imageview.viewlib.rainhong.imagecutview;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,18 +14,19 @@ import imageview.viewlib.rainhong.imagecutviewlib.BaseImageCutView;
 public class MainActivity extends AppCompatActivity {
     final AnimationHandle ActivityAnimationHandler = new AnimationHandle(this);
     BaseImageCutView MyImageCutView;
-    Bitmap Test1Bitmap;
     Button buttonUp;
     Button buttonDown;
     Button buttonLeft;
     Button buttonRight;
     Button buttonAnimation;
+    Button buttonImage1;
+    Button buttonImage2;
+    Button buttonImage3;
     Thread AnimationThread;
     boolean Animation_Flag;
+    //int Animation_Type;
     int Location_x;
     int Location_y;
-    int bmp_Width;
-    int bmp_Height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +34,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         MyImageCutView = (BaseImageCutView) findViewById(R.id.MyImageCutView);
         Animation_Flag = false;
+        //Animation_Type = 0;
         Location_x=0;
         Location_y=0;
 
+        buttonImage1 = (Button) findViewById(R.id.buttonImage1);
+        buttonImage2 = (Button) findViewById(R.id.buttonImage2);
+        buttonImage3 = (Button) findViewById(R.id.buttonImage3);
         buttonUp = (Button) findViewById(R.id.buttonUp);
         buttonDown = (Button) findViewById(R.id.buttonDown);
         buttonLeft = (Button) findViewById(R.id.buttonLeft);
@@ -48,28 +51,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Location_y-=10;
-                MyImageCutView.FlushLocation(Location_x, Location_y);
+                MyImageCutView.moveImageLocation(Location_x, Location_y);
             }
         });
         buttonDown.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Location_y+=10;
-                MyImageCutView.FlushLocation(Location_x, Location_y);
+                MyImageCutView.moveImageLocation(Location_x, Location_y);
             }
         });
         buttonRight.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Location_x+=10;
-                MyImageCutView.FlushLocation(Location_x, Location_y);
+                MyImageCutView.moveImageLocation(Location_x, Location_y);
             }
         });
         buttonLeft.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Location_x-=10;
-                MyImageCutView.FlushLocation(Location_x, Location_y);
+                MyImageCutView.moveImageLocation(Location_x, Location_y);
             }
         });
         buttonAnimation.setOnClickListener(new Button.OnClickListener() {
@@ -78,23 +81,52 @@ public class MainActivity extends AppCompatActivity {
                 if(!Animation_Flag) {
                     Location_x=0;
                     Location_y=0;
-                    MyImageCutView.FlushLocation(Location_x, Location_y);
+                    MyImageCutView.moveImageLocation(Location_x, Location_y);
                     Animation_Flag = true;
                     AnimationThread = new Thread(Animation);
                     AnimationThread.start();
                     buttonAnimation.setText("Stop");
+                    buttonImage1.setEnabled(false);
+                    buttonImage2.setEnabled(false);
+                    buttonImage3.setEnabled(false);
                 }
                 else {
                     Animation_Flag = false;
                     buttonAnimation.setText("animation");
+                    buttonImage1.setEnabled(true);
+                    buttonImage2.setEnabled(true);
+                    buttonImage3.setEnabled(true);
                 }
             }
         });
 
-        Test1Bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.testimg1);
-        bmp_Width = Test1Bitmap.getWidth();
-        bmp_Height = Test1Bitmap.getHeight();
-        MyImageCutView.setBaseImage(Test1Bitmap, 0, 0, bmp_Width / 2, bmp_Height / 2);
+        buttonImage1.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyImageCutView.setBaseImage(R.drawable.testimg1);
+            }
+        });
+
+        buttonImage2.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyImageCutView.setBaseImage(R.drawable.testimg2);
+                MyImageCutView.setRectMaxWidth(MyImageCutView.getRectMaxWidth() / 2);
+                MyImageCutView.setRectMaxHeight(MyImageCutView.getRectMaxHeight() / 2);
+                MyImageCutView.moveImageLocation(0, 0);
+                Location_x=0;
+                Location_y=0;
+            }
+        });
+
+        buttonImage3.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyImageCutView.setBaseImage(R.drawable.testimg2);
+            }
+        });
+
+        MyImageCutView.setBaseImage(R.drawable.testimg1);
     }
 
     private Runnable Animation = new Runnable() {
@@ -103,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
         int IndexArea;
         @Override
         public void run() {
-            MaxRight = bmp_Width/2;
-            MaxBottom = bmp_Height/2;
+            MaxRight = MyImageCutView.getRectMaxWidth();
+            MaxBottom = MyImageCutView.getRectMaxHeight();
             IndexArea = 1;
             while(Animation_Flag) {
                 try {
@@ -149,8 +181,30 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             MainActivity activity = mActivity.get();
             if (activity != null) {
-                activity.MyImageCutView.FlushLocation(activity.Location_x, activity.Location_y);
+                activity.MyImageCutView.moveImageLocation(activity.Location_x, activity.Location_y);
             }
         }
     }
+
+    /*public static Bitmap getBitmap(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Bitmap d = BitmapFactory.decodeStream(is);
+            is.close();
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Runnable LoadImageURL = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                Test1Bitmap = BitmapFactory.decodeStream((InputStream)new URL("http://192.168.1.236/web/CurrentImage.jpg").getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };*/
 }
